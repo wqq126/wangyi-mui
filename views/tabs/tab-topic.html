@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../../css/mui.min.css" />
+		<script src="//cdn.bootcss.com/angular-ui-bootstrap/2.5.0/ui-bootstrap.min.js"></script>
+		<script src="//cdn.bootcss.com/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.js"></script>
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			
+			.hidden {
+				display: none;
+			}
+			
+			.active {
+				display: block;
+			}
+			
+			#listBox img {
+				width: 70px;
+				height: 70px;
+			}
+			
+			.list-title {
+				text-indent: 20px;
+				white-space: inherit;
+			}
+			
+			.mui-card-content-inner img {
+				width: 100%;
+			}
+			
+			.mui-card-media {
+				position: relative;
+			}
+			
+			.mui-card-media p {
+				position: absolute;
+				top: 20px;
+				left: 70px;
+			}
+			
+			.mui-card-media img {
+				width: 50px;
+				border-radius: 50%;
+			}
+			
+			.select {
+				padding: 10px;
+				color: white;
+				background: red;
+			}
+			
+			.selected {
+				font-size: 18px;
+				border-bottom: 1px solid white;
+			}
+			
+			#topic {
+				border: 1px solid gainsboro;
+				padding: 5px;
+				margin-top: 10px;
+			}
+			
+			.touxiang{
+				width: 50px;
+				height: 50px;
+				margin-right: 10px;
+				border-radius: 50%;
+			}
+			
+			.answer {
+				display: flex;
+				margin-top: 10px;
+			}
+			
+			.answer p {
+				width: 80%;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="mui-content">
+			<div class="select">
+				<span class="selected wenba">问吧</span> <span class="huati">话题</span>
+			</div>
+			<div class="mui-scroll">
+
+				<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+					<!--图文列表开始-->
+					<div class="cardbox">
+
+					</div>
+					<!--<div class="mui-card">
+						<div class="mui-card-header mui-card-media" style="height:40vw;background-image:url(../../images/cbd.jpg)"></div>
+						<div class="mui-card-content">
+							<div class="mui-card-content-inner">
+								<p>Posted on January 18, 2016</p>
+								<p style="color: #333;">这里显示文章摘要，让读者对文章内容有个粗略的概念...</p>
+							</div>
+						</div>
+						<div class="mui-card-footer">
+							<a class="mui-card-link">Like</a>
+							<a class="mui-card-link">Read more</a>
+						</div>
+					</div>-->
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../../libs/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../libs/angular.js" type="text/javascript" charset="utf-8"></script>
+
+	<script>
+		var wenba = true;
+		var offset = 0;
+		var toffset = 0;
+		var size = 10;
+		var url = "http://c.m.163.com/newstopic/list/expert/6YOR5bee/" + offset + "-" + size + ".html";
+		mui('.select').on('tap', 'span', function() {
+			if(!$(this).hasClass('selected')) {
+				$(this).addClass('selected');
+				$(this).siblings().removeClass('selected');
+				var listBox = document.querySelector('.cardbox');
+				listBox.innerHTML = '';
+				if($(this).hasClass('wenba')) {
+					wenba = true;
+					offset = 0;
+					mui.ajax({
+						url: url,
+						success: function(res) {
+							var items = JSON.parse(res).data.expertList;
+							createwenba(items);
+						}
+					})
+				} else {
+					wenba = false;
+					toffset = 0;
+					var turl = 'http://topic.comment.163.com/topic/list/subject/' + toffset + '-' + size + '.html'
+					mui.ajax({
+						url: turl,
+						success: function(res) {
+							var items = JSON.parse(res).data.subjectList;
+							createQa(items);
+						}
+					})
+				}
+
+			}
+		})
+		//		//		点击进入问答
+				mui('#pullrefresh').on('tap', '.mui-card', function() {
+					if(wenba){
+					var tid = this.getAttribute('data');
+					window.localStorage.tid = tid;
+					mui.openWindow({
+						url: '../details/topicqa.html',
+						styles: {
+							top: 0,
+							bottom: 0
+						}
+					})	
+					}
+					
+				})
+		mui.init({
+			swipeBack: true, //启用右滑关闭功能
+			pullRefresh: {
+				container: '#pullrefresh',
+				down: {
+					callback: pulldownRefresh
+				},
+				up: {
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+		/**
+		 * 下拉刷新具体业务实现
+		 */
+		function pulldownRefresh() {
+			setTimeout(function() {
+
+				if(wenba) {
+					mui.ajax({
+						url: 'http://c.m.163.com/newstopic/list/expert/6YOR5bee/0-10.html',
+						success: function(res) {
+							var items = JSON.parse(res).data.expertList;
+							createwenba(items);
+						}
+					})
+				}
+				mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+			}, 1000);
+		}
+		var count = 0;
+		/**
+		 * 上拉加载具体业务实现
+		 */
+		function pullupRefresh() {
+			setTimeout(function() {
+				mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > 2)); //参数为true代表没有更多数据了。
+				offset = offset + 10;
+				toffset = toffset + 10;
+				if(wenba) {
+					var url = "http://c.m.163.com/newstopic/list/expert/6YOR5bee/" + offset + "-" + size + ".html";
+					mui.ajax({
+						url: url,
+						success: function(res) {
+							var items = JSON.parse(res).data.expertList;
+							createwenba(items);
+						}
+					})
+				}else{
+					var turl = 'http://topic.comment.163.com/topic/list/subject/' + toffset + '-' + size + '.html'
+					mui.ajax({
+						url: turl,
+						success: function(res) {
+							//							var tops = JSON.parse(res).data.recomendExpert.expertList;
+							var items = JSON.parse(res).data.subjectList;
+							createQa(items);
+						}
+					})
+				}
+
+			}, 1000);
+		}
+		mui.ajax({
+			url: url,
+			success: function(res) {
+				var items = JSON.parse(res).data.expertList;
+				createwenba(items);
+			}
+		})
+
+		function createwenba(items) {
+			var listBox = document.querySelector('.cardbox');
+			for(var i = 0; i < items.length; i++) {
+				var card = document.createElement('div');
+				card.setAttribute('class', 'mui-card');
+				var header = '<div class="mui-card-header mui-card-media">' +
+					'<img src=' + items[i].headpicurl + '>' +
+					'<p>' + items[i].name + '<p>' +
+					'</div>';
+				var coninnerHTML = '<div class="mui-card-content">' +
+					'<div class="mui-card-content-inner">' +
+					'<img src=' + items[i].picurl + '>' +
+					'<p>' + items[i].description + '<p>' +
+					'</div>' +
+					'</div>';
+				var html = header + coninnerHTML;
+				card.innerHTML = html;
+				var id = items[i].expertId
+				card.setAttribute('data',id)
+				listBox.appendChild(card);
+			}
+		}
+		function createQa(items){
+			var listBox = document.querySelector('.cardbox');
+			for(var i=0;i<items.length;i++){
+				var card = document.createElement('div');
+				card.setAttribute('class', 'mui-card');
+//				|| 
+				var imgsrc1 =  items[i].talkContent[0].userHeadPicUrl || "http://img5.cache.netease.com/tie/images/noface80_80.png";
+				var imgsrc2 =  items[i].talkContent[1].userHeadPicUrl || "http://img5.cache.netease.com/tie/images/noface80_80.png";
+				var coninnerHtnl = '<div>'+  
+										'<p>#'+items[i].name+'#</p>'+
+										'<div class="answer">'+
+											'<img class="touxiang" src='+ imgsrc1 +'>'+
+											'<p>'+items[i].talkContent[0].content+'</p>'+
+										'</div>'+
+											'<div class="answer">'+
+											'<img class="touxiang" src='+ imgsrc2 +'>'+
+											'<p>'+items[i].talkContent[1].content+'</p>'+
+										'</div>'+
+								'</div>';
+								card.innerHTML = coninnerHtnl;
+				listBox.appendChild(card);
+			}
+		}
+		//		点击轮播图跳转
+
+		//		列别点击跳转函数
+		mui('#listBox').on('tap', 'a', function() {
+			var id = this.getAttribute('data');
+			var locs = window.localStorage;
+			locs.id = id;
+			var href = this.href;
+			mui.openWindow({
+				url: '../details/newsDetail.html',
+				styles: {
+					top: '45px',
+					bottom: 0
+				}
+			})
+		})
+		//列表添加元素 函数
+		function createList(items) {
+
+		}
+	</script>
+
+</html>

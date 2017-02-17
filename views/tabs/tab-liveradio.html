@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>蜗牛</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../../css/mui.min.css" />
+		<script src="//cdn.bootcss.com/angular-ui-bootstrap/2.5.0/ui-bootstrap.min.js"></script>
+		<script src="//cdn.bootcss.com/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.js"></script>
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			
+			.hidden {
+				display: none;
+			}
+			
+			.active {
+				display: block;
+			}
+			
+			#listBox img {
+				width: 70px;
+				height: 70px;
+			}
+			
+			.live-title {
+				text-indent: 20px;
+				white-space: inherit;
+			}
+			
+			.mui-table-view img {
+				width: 100%;
+			}
+			
+			.allsubs {
+				list-style-type: none;
+				overflow: scroll;
+				white-space: nowrap;
+				padding: 5px 0;
+			}
+			
+			.allsubs li {
+				width: 70px;
+				display: inline-block;
+				margin-left: 10px;
+			}
+		</style>
+	</head>
+
+	<body ng-app='app'>
+		<!--<header class="mui-bar mui-bar-nav" style="background: orange;">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">蜗牛</h1>
+		</header>-->
+		<div class="mui-content">
+			<div class="mui-scroll">
+				<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+					<!--轮播图开始-->
+					<div lunbo>
+
+					</div>
+					<!--全部直播-->
+					<div ng-controller="allsub">
+						<ul  class="allsubs">
+							<li ng-repeat="sub in subs">
+								<a href={{sub.roomName}}>
+									<img width="70px" style="border-radius: 50%;" ng-src="{{sub.icon}}" />
+									<p>{{sub.tname}}</p>
+								</a>
+							</li>
+						</ul>
+
+					</div>
+					<!--轮播图结束-->
+
+					<!--列表开始-->
+					<ul class="mui-table-view">
+					</ul>
+					<!--列表结束-->
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../libs/angular.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/ng-template" id="lunbo.html">
+		<ul>
+			<li ng-repeat="img in images" class="fade-in style hidden">
+				<a href="">
+					<img width="100%" ng-src={{img.image}} style="margin-left: -20px;" alt="" />
+
+				</a>
+
+				<p>{{img.roomName}}</p>
+			</li>
+		</ul>
+	</script>
+	<script>
+		mui.init({
+			swipeBack: true, //启用右滑关闭功能
+			pullRefresh: {
+				container: '#pullrefresh',
+				down: {
+					callback: pulldownRefresh
+				},
+				up: {
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+		var page = 1;
+		//		var url = 'http://c.m.163.com/nc/article/headline/T1348647853363/' + offset + '-' + size + '.html';
+		var url = 'http://data.live.126.net/livechannel/previewlist/1.json';
+		/**
+		 * 下拉刷新具体业务实现
+		 */
+		function pulldownRefresh() {
+			setTimeout(function() {
+				var offset = Math.floor(Math.random() * 15);
+				var size = offset + 10;
+				var url = 'http://c.m.163.com/nc/article/headline/T1348647853363/' + offset + '-' + size + '.html';
+				mui.ajax({
+					url: url,
+					success: function(res) {
+						var items = res['T1348647853363'];
+						createList(items);
+					}
+				})
+				mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+			}, 1000);
+		}
+		var count = 0;
+		/**
+		 * 上拉加载具体业务实现
+		 */
+		function pullupRefresh() {
+			setTimeout(function() {
+				mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > 2)); //参数为true代表没有更多数据了。
+				page = page + 1;
+				var url = 'http://data.live.126.net/livechannel/previewlist/' + page + '.json';
+				mui.ajax({
+					url: url,
+					success: function(res) {
+						var items = res.live_review;
+						createli(items);
+					}
+				})
+			}, 1000);
+		}
+		mui.ajax({
+			url: 'http://data.live.126.net/livechannel/previewlist/1.json',
+			success: function(res) {
+				var items = res.live_review;
+				createli(items);
+			}
+		});
+
+		function createli(items) {
+			var liBox = document.querySelector('.mui-table-view');
+			for(var i = 0; i < items.length; i++) {
+				var li = document.createElement('li');
+				var id = items[i].roomId;
+				li.setAttribute('data', id);
+				//				生成图片
+				var img = document.createElement('img');
+				img.src = items[i].image;
+				var title = document.createElement('p');
+				title.setAttribute('class', 'live-title');
+				title.innerHTML = items[i].roomName;
+				li.appendChild(img);
+				li.appendChild(title);
+				liBox.appendChild(li);
+
+			}
+		}
+		//		列别点击跳转函数
+		mui('.mui-table-view').on('tap', 'li', function() {
+			var id = this.getAttribute('data');
+			var locs = window.localStorage;
+			locs.id = id;
+			var href = this.href;
+			mui.openWindow({
+				url: '../details/livedetail.html',
+				styles: {
+					top: 0,
+					bottom: 0
+				}
+			})
+		})
+		mui('.allsubs').on('tap','a',function(){
+			var id = this.getAttribute('href');
+			console.log(id+'sss');
+			var locs = window.localStorage;
+			locs.id = id;
+			var href = this.href;
+			mui.openWindow({
+				url: '../details/livedetail.html',
+				styles: {
+					top: '45px',
+					bottom: 0
+				}
+			})
+		})
+		angular.module('app', [])
+			.controller('allsub', ['$scope', '$http', function($scope, $http) {
+				$http.get('http://data.live.126.net/livechannel/previewlist/1.json').then(function(res) {
+					$scope.subs = res.data.sublives;
+				})
+			}])
+			//图片轮播
+			.controller('lunboController', ['$scope', 'readJSON', function($scope, readJSON) {
+
+			}])
+			.factory('readJSON', ['$http', '$q', function($http, $q) {
+				return {
+					query: function() {
+						var deferred = $q.defer();
+						$http({
+							method: 'GET',
+							url: 'http://data.live.126.net/livechannel/previewlist/1.json'
+						}).success(function(data, status, header, config) {
+							deferred.resolve(data.top);
+						}).error(function(data, status, header, config) {
+							deferred.reject(data.top);
+						});
+						return deferred.promise;
+					}
+				}
+			}])
+			.directive('lunbo', ['readJSON', function(readJSON) {
+				return {
+					restrict: 'EA',
+					templateUrl: 'lunbo.html',
+					scope: {},
+					link: function(scope, element, attr) {
+						var promise = readJSON.query();
+						var step = 0;
+						scope.flag = false;
+						promise.then(function(data) {
+							scope.images = data;
+						});
+						setInterval(function() {
+							element.find("li").css({
+								"display": "none",
+								"opacity": 0
+							});
+							step++;
+							step = step % 5;
+							element.find("li").eq(step).css({
+								"display": "block",
+								"opacity": 1
+							});
+						}, 3000)
+					}
+				}
+			}]);
+	</script>
+
+</html>

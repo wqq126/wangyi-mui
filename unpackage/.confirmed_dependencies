@@ -1,0 +1,114 @@
+{
+	"index.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"js/update.js",
+			"views/tabs/tab-news.html"
+		],
+		"refer": [
+			"index-menu.html",
+			"examples/icons.html",
+			"examples/info.html",
+			"examples/badges.html",
+			"views/tabs/tab-liveradio.html",
+			"views/tabs/tab-setting.html",
+			"views/tabs/tab-news.html",
+			"views/tabs/tab-topic.html"
+		]
+	},
+	"examples/icons.html": {
+		"resources": [
+			"css/app.css"
+		]
+	},
+	"examples/info.html": {
+		"resources": [
+			"images/qrcode.png"
+		]
+	},
+	"examples/badges.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css"
+		]
+	},
+	"views/tabs/tab-news.html": {
+		"resources": [
+			"libs/angular.js",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css"
+		],
+		"refer": [
+			"views/details/newsDetail.html"
+		]
+	},
+	"views/tabs/tab-topic.html": {
+		"resources": [
+			"libs/jquery.min.js",
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"libs/angular.js"
+		],
+		"refer": [
+			"views/details/topicqa.html"
+		]
+	},
+	"views/details/newsDetail.html": {
+		"resources": [
+			"libs/angular-sanitize.js",
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"libs/angular.js",
+			"fonts/mui.ttf"
+		]
+	},
+	"views/details/topicqa.html": {
+		"resources": [
+			"libs/jquery.min.js",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"libs/angular.js"
+		]
+	},
+	"views/details/livedetail.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"libs/angular.js",
+			"fonts/mui.ttf"
+		]
+	},
+	"views/tabs/tab-liveradio.html": {
+		"refer": [
+			"views/details/livedetail.html"
+		],
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"libs/angular.js"
+		]
+	},
+	"index-menu.html": {
+		"refer": [
+			"examples/pullrefresh_main.html"
+		],
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css"
+		]
+	},
+	"examples/pullrefresh_main.html": {
+		"resources": [
+			"examples/pullrefresh_sub.html"
+		],
+		"refer": [
+			"examples/pullrefresh_sub.html"
+		]
+	}
+}

@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-content header {
+				height: 250px;
+				position: relative;
+			}
+			
+			.mui-content header p {
+				color: white;
+				width: 80%;
+				position: absolute;
+				top: 70px;
+				left: 40px;
+				font-size: 16px;
+			}
+			
+			.mui-card {
+				padding: 10px;
+			}
+			
+			.more-data {
+				position: absolute;
+				bottom: 0px;
+				left: 45%;
+			}
+			
+			.flex {
+				display: flex;
+			}
+			
+			.active {
+				-webkit-transform: rotate(180deg);
+				transform: rotate(180deg);
+				-webkit-transition: all 2s;
+				transition: all 2s;
+			}
+		</style>
+	</head>
+
+	<body ng-app="app" ng-controller="qaCtrl">
+		<div  class="mui-content">
+			<header class="mui-bar mui-bar-nav" style="height: 45px;">
+			    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			    <h1 class="mui-title">话题</h1>
+			</header>
+			<header style="background-image:url({{header.picurl}}) ; background-size: 100%; background-repeat:no-repeat ; ">
+				<p>{{header.alias}}</p>
+			</header>
+		</div>
+		<div class="mui-card " style="display: flex;  position: relative;">
+			<img style="width: 50px; height: 50px;margin-right: 20px; border-radius: 50%;" ng-src={{header.headpicurl}} alt="" />
+			<div style="width: 80%;">
+				<p>{{header.name}}|{{header.title}}</p>
+				<p>{{description}}</p>
+			</div>
+			<span id="ff" ng-click="rotate()"  class="showmore more-data mui-icon mui-icon-arrowup"></span>
+		</div>
+		<div ng-repeat="list in lists">
+			<div class="mui-card">
+				<div class="flex">
+					<img ng-src={{list.question.userHeadPicUrl}} alt="" style="width: 50px;height: 50px; border-radius:50% ;" />
+					<div style="width: 80%;margin-left: 10px;">
+						<p>{{list.question.userName}}</p>
+						<p>{{list.question.content}}</p>
+					</div>
+				</div>
+				<div class="flex">
+					<img ng-src={{list.answer.specialistHeadPicUrl}} alt="" style="width: 50px;height: 50px; border-radius:50% ;" />
+					<div style="width: 80%;margin-left: 10px;">
+						<p>{{list.answer.specialistName}}</p>
+						{{list.answer.content}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../../libs/jquery.min.js"></script>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../libs/angular.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		mui.init();
+		var id = window.localStorage.tid;
+		var url = 'http://c.m.163.com/newstopic/qa/' + id + '.html';
+		var app = angular.module('app', []);
+		app.controller('qaCtrl', ['$scope', '$http', function($scope, $http) {
+			$http.get(url).then(function(res) {
+				$scope.header = res.data.data.expert;
+				$scope.description = res.data.data.expert.description.substring(0, 35);
+				$scope.alldescription = res.data.data.expert.description;
+				$scope.lists = res.data.data.hotList;
+			});
+			$scope.rotate = function(){
+				var deg = 0;
+				document.getElementById("ff").style.transform = "rotate(" + deg + "deg)";
+						if($('#ff').hasClass('showmore')){
+							$('#ff').removeClass('showmore');
+							$scope.description = $scope.alldescription; 
+						}else{
+							$('#ff').addClass('showmore');
+							$scope.description = $scope.alldescription.substring(0, 35);
+						}
+			}
+		}]);
+		app.directive('moreData', function() {
+			return {
+				restrict: 'C',
+				link: function(scope, ele, attr) {
+					var deg = 0;
+					document.getElementById("ff").onclick = function() {
+						deg += 180;
+						document.getElementById("ff").style.transform = "rotate(" + deg + "deg)";
+					}
+				}
+			}
+		})
+	</script>
+
+</html>

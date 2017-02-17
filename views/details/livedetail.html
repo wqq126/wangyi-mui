@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.liveli{
+				list-style-type: none;
+				display: flex;
+				padding: 0px;
+				margin-left: -20px;
+				margin-top: 20px;
+			}
+			.liveli img{
+				width: 50px;
+				height: 50px;
+				border-radius:50% ;
+				margin-right: 10px;
+			}
+			.liveli div{
+				width: 80%;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+
+	<body ng-app="app">
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">直播</h1>
+		</header>
+		<video style="margin-top: 45px;" controls="controls" src="http://vodctz2y190.vod.126.net/vodctz2y190/b203419f70d4479a99fc61483ef3bd3d_1482303150299_1482304584429_1096389-00000.mp4"  width="100%"></video>
+		<ul ng-controller="livedetail">
+			
+			<li ng-repeat="item in items"  class="liveli">
+				<!--{{item}}-->
+				<img ng-src="{{item.avatar||'http://img5.cache.netease.com/tie/images/noface80_80.png'}}" alt="" width="50px" />
+				<div>
+					<p>{{item.nick_name}}</p>
+					{{item.msg}}
+				</div>
+			</li>
+		</ul>
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script src="../../libs/angular.js"></script>
+	<script type="text/javascript">
+		mui.init();
+		var id = window.localStorage.id;
+		var url = 'http://data.chat.126.net/route_room?topicid=' + id;
+		angular.module('app', [])
+			.controller('livedetail', ['$scope', '$http', function($scope, $http) {
+				$http.get(url).then(function(res) {
+					$scope.items = res.data.last_log;
+				})
+			}])
+	</script>
+
+</html>
