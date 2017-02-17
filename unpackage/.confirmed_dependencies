@@ -95,7 +95,8 @@
 	},
 	"index-menu.html": {
 		"refer": [
-			"examples/pullrefresh_main.html"
+			"examples/pullrefresh_main.html",
+			"views/list/news-list.html"
 		],
 		"resources": [
 			"js/mui.min.js",
@@ -109,6 +110,11 @@
 		],
 		"refer": [
 			"examples/pullrefresh_sub.html"
+		]
+	},
+	"views/list/news-list.html": {
+		"resources": [
+			"libs/angular.js"
 		]
 	}
 }

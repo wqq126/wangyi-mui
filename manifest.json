@@ -332,7 +332,8 @@
 				],
 				"refer": [
 					"examples/offcanvas-drag-left.html",
-					"examples/pullrefresh_main.html"
+					"examples/pullrefresh_main.html",
+					"views/list/news-list.html"
 				],
 				"priority": 0
 			},
@@ -1092,6 +1093,13 @@
 				"refer": [
 					"views/details/livedetail.html"
 				],
+				"priority": 0
+			},
+			"views/list/news-list.html": {
+				"resources": [
+					"libs/angular.js"
+				],
+				"refer": [],
 				"priority": 0
 			}
 		},

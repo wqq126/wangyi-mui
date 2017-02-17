@@ -31,10 +31,13 @@
 				margin-bottom: 35px;
 			}
 			#sidelist li{
-				height: 25px;
-				line-height: 25px;
+				margin-left: 10%;
+				height: 35px;
+				width: 80%;
+				line-height: 35px;
 				text-align: center;
 				margin-top: 10px;
+				border: 1px solid red;
 			}
 		</style>
 	</head>
@@ -182,11 +185,21 @@
 					for(var i = 0; i < items.length; i++) {
 						var sidelist = document.querySelector('#sidelist');
 						var li = document.createElement('li');
+						var id = items[i].tid;
+						li.setAttribute('data',id);
 						li.innerHTML = items[i].tname;
 						sidelist.appendChild(li);
 					}
 
 				}
+			});
+			mui('#sidelist').on('tap','li',function(){
+				var id = this.getAttribute('data');
+				window.localStorage.id = id;
+				mui.openWindow({
+					url:'views/list/news-list.html'
+				})
+				console.log(id);
 			})
 		</script>
 	</body>
