@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		
+
 		<link rel="stylesheet" href="../../css/mui.min.css" />
 		<script src="//cdn.bootcss.com/angular-ui-bootstrap/2.5.0/ui-bootstrap.min.js"></script>
 		<script src="//cdn.bootcss.com/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.js"></script>
@@ -24,13 +24,20 @@
 			.active {
 				display: block;
 			}
-			#listBox img{
+			
+			#listBox img {
 				width: 70px;
 				height: 70px;
 			}
-			.list-title{
+			
+			.list-title {
 				text-indent: 20px;
 				white-space: inherit;
+			}
+			
+			.image {
+				width: 100%;
+				height: 400px;
 			}
 		</style>
 	</head>
@@ -40,20 +47,19 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">蜗牛</h1>
 		</header>-->
-		<!--<header class="mui-bar mui-bar-nav">
+		<header class="mui-bar mui-bar-nav">
 		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 		    <h1 class="mui-title">新闻</h1>
-		</header>-->
+		</header>
 		<div class="mui-content">
-			
+
 			<div class="mui-scroll">
-
 				<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
-				<!--轮播图开始-->
-				<div lunbo>
+					<!--轮播图开始-->
+					<div lunbo>
 
-				</div>
-				<!--轮播图结束-->
+					</div>
+					<!--轮播图结束-->
 					<!--图文列表开始-->
 					<ul class="mui-table-view">
 						<li class="mui-table-view-cell mui-media" id="listBox">
@@ -79,7 +85,6 @@
 				<!--<a href="{{img.imgsrc}}"><img width="100%" src="{{img.imgsrc}}" alt="" /></a>-->
 				<a href="">
 					<img width="100%" ng-src={{img.imgsrc}} style="margin-left: -20px;" alt="" />
-					
 				</a>
 				<p>{{img.title}}</p>
 			</li>
@@ -101,21 +106,23 @@
 		});
 		var offset = 0;
 		var size = 10;
-		var url = 'http://c.m.163.com/nc/article/headline/T1348647853363/' + offset + '-' + size + '.html';
+		var id = window.localStorage.id;
+		var url = 'http://c.m.163.com/nc/article/headline/' + id + '/' + offset + '-' + size + '.html';
 		/**
 		 * 下拉刷新具体业务实现
 		 */
 		function pulldownRefresh() {
 			setTimeout(function() {
-				var  offset = Math.floor(Math.random()*15);
-				var size = offset+ 10;
-				var url = 'http://c.m.163.com/nc/article/headline/T1348647853363/' + offset + '-' + size + '.html';
+				var offset = Math.floor(Math.random() * 15);
+				var size = offset + 10;
+				var id = window.localStorage.id;
+				var url = 'http://c.m.163.com/nc/article/headline/' + id + '/' + offset + '-' + size + '.html';
 				mui.ajax({
-					url:url,
-					success:function(res){
-						var items = res['T1348647853363'];
-//						document.querySelector('#listBox').innerHTML='';
-						createList(items);
+					url: url,
+					success: function(res) {
+						var items = res[id];
+						//						document.querySelector('#listBox').innerHTML='';
+						//						createList(items);
 					}
 				})
 				mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
@@ -128,122 +135,134 @@
 		function pullupRefresh() {
 			setTimeout(function() {
 				mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > 2)); //参数为true代表没有更多数据了。
-				offset = offset+10;
-				var url = 'http://c.m.163.com/nc/article/headline/T1348647853363/' + offset + '-' + size + '.html';
+				offset = offset + 10;
+				var url = 'http://c.m.163.com/nc/article/headline/' + id + '/' + offset + '-' + size + '.html';
 				mui.ajax({
-					url:url,
-					success:function(res){
-						var items = res['T1348647853363'];
-						createList(items);
+					url: url,
+					success: function(res) {
+						var items = res[id];
+						if(items.length != 0) {
+							 
+							createList(items);
+						}
 					}
 				})
 			}, 1000);
 		}
-		
+
 		mui.ajax({
-			url:url,
-			success:function(res){
-				var items = res['T1348647853363'];
-				createList(items);
+			url: url,
+			success: function(res) {
+				var items = res[id];
+				if(items.length != 0) {
+					No404  = true;
+					createList(items);
+				} else {
+					var img = document.createElement('img');
+					img.src = '../../images/404.jpg';
+					img.setAttribute('class', 'image');
+					document.querySelector('.mui-content').appendChild(img);
+				}
+
 			}
 		})
-//		点击轮播图跳转
-		
-//		列别点击跳转函数
-		mui('#listBox').on('tap','a',function(){
+		//		点击轮播图跳转
+
+		//		列别点击跳转函数
+		mui('#listBox').on('tap', 'a', function() {
 			var id = this.getAttribute('data');
 			var locs = window.localStorage;
 			locs.id = id;
 			var href = this.href;
 			mui.openWindow({
-				url:'../details/newsDetail.html',
-				styles:{
-					top:0,
-					bottom:0
+				url: '../details/newsDetail.html',
+				styles: {
+					top: 0,
+					bottom: 0
 				}
 			})
 		})
 		//列表添加元素 函数
-		function createList (items){
+		function createList(items) {
 			var lists = document.querySelector('#listBox');
-				for(var i=0;i<items.length;i++){
-					var itemBoxs = document.createElement('a');
-					itemBoxs.href = 'views/details/newsDetail.html';
-					itemBoxs.setAttribute('data',items[i].docid);
-					var img = document.createElement('img');
-					var title = document.createElement('p');
-					var replyCount = document.createElement('p');
-					title.innerHTML = items[i].title;
-					replyCount.innerHTML = items[i].replyCount+'跟帖数';
-					img.src = items[i].imgsrc;
-					img.setAttribute('class','mui-media-object');
-					img.setAttribute('class','mui-pull-left');
-					title.setAttribute('class','list-title');
-					replyCount.setAttribute('class','list-title');
-					itemBoxs.appendChild(img);
-					itemBoxs.appendChild(title);
-					itemBoxs.appendChild(replyCount);
-					lists.appendChild(itemBoxs);
-				}
+			for(var i = 0; i < items.length; i++) {
+				var itemBoxs = document.createElement('a');
+				itemBoxs.href = 'views/details/newsDetail.html';
+				itemBoxs.setAttribute('data', items[i].docid);
+				var img = document.createElement('img');
+				var title = document.createElement('p');
+				var replyCount = document.createElement('p');
+				title.innerHTML = items[i].title;
+				replyCount.innerHTML = items[i].replyCount + '跟帖数';
+				img.src = items[i].imgsrc;
+				img.setAttribute('class', 'mui-media-object');
+				img.setAttribute('class', 'mui-pull-left');
+				title.setAttribute('class', 'list-title');
+				replyCount.setAttribute('class', 'list-title');
+				itemBoxs.appendChild(img);
+				itemBoxs.appendChild(title);
+				itemBoxs.appendChild(replyCount);
+				lists.appendChild(itemBoxs);
+			}
 		}
-		
+
 		angular.module('app', [])
-			.controller('newsCtrl', ['$scope', '$http', function($scope, $http) {
-
-				$http.get(url).success(function(res) {
-					$scope.items = res['T1348647853363'];
+					.controller('newsCtrl', ['$scope', '$http', function($scope, $http) {
+		
+						$http.get(url).success(function(res) {
+							$scope.items = res[id];
+							
+		
+						})
+					}])
 					
-
-				})
-			}])
-			
-			//图片轮播
-			.controller('lunboController', ['$scope', 'readJSON', function($scope, readJSON) {
-
-			}])
-			.factory('readJSON', ['$http', '$q', function($http, $q) {
-				return {
-					query: function() {
-						var deferred = $q.defer();
-						$http({
-							method: 'GET',
-							url:url
-						}).success(function(data, status, header, config) {
-							deferred.resolve(data['T1348647853363'][0]['ads']);
-						}).error(function(data, status, header, config) {
-							deferred.reject(data['T1348647853363'][0]['ads']);
-						});
-						return deferred.promise;
-					}
-				}
-			}])
-			.directive('lunbo', ['readJSON', function(readJSON) {
-				return {
-					restrict: 'EA',
-					templateUrl: 'lunbo.html',
-					scope: {},
-					link: function(scope, element, attr) {
-						var promise = readJSON.query();
-						var step = 0;
-						scope.flag = false;
-						promise.then(function(data) {
-							scope.images = data;
-						});
-						setInterval(function() {
-							element.find("li").css({
-								"display": "none",
-								"opacity": 0
-							});
-							step++;
-							step = step % 5;
-							element.find("li").eq(step).css({
-								"display": "block",
-								"opacity": 1
-							});
-						}, 3000)
-					}
-				}
-			}]);
+					//图片轮播
+					.controller('lunboController', ['$scope', 'readJSON', function($scope, readJSON) {
+		
+					}])
+					.factory('readJSON', ['$http', '$q', function($http, $q) {
+						return {
+							query: function() {
+								var deferred = $q.defer();
+								$http({
+									method: 'GET',
+									url:url
+								}).success(function(data, status, header, config) {
+									deferred.resolve(data['T1348647853363'][0]['ads']);
+								}).error(function(data, status, header, config) {
+									deferred.reject(data['T1348647853363'][0]['ads']);
+								});
+								return deferred.promise;
+							}
+						}
+					}])
+					.directive('lunbo', ['readJSON', function(readJSON) {
+						return {
+							restrict: 'EA',
+							templateUrl: 'lunbo.html',
+							scope: {},
+							link: function(scope, element, attr) {
+								var promise = readJSON.query();
+								var step = 0;
+								scope.flag = false;
+								promise.then(function(data) {
+									scope.images = data;
+								});
+								setInterval(function() {
+									element.find("li").css({
+										"display": "none",
+										"opacity": 0
+									});
+									step++;
+									step = step % 5;
+									element.find("li").eq(step).css({
+										"display": "block",
+										"opacity": 1
+									});
+								}, 3000)
+							}
+						}
+					}]);
 	</script>
 
 </html>

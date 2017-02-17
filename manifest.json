@@ -60,9 +60,9 @@
 		"Navigator":{
 			"description": "浏览器信息"
 		},
-		"Payment":{},
+		
 		"Uploader": {},
-		"Share":{},
+		
 		"NativeObj": {},
 		"Invocation":{}
 	},
@@ -96,7 +96,7 @@
 				"keystore": "",/*Android必选，打包证书文件*/
 				"password": "",/*Android必选，打包证书密码*/
 				"aliasname": "",/*Android必选，打包证书别名*/
-				"permissions": ["<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>","<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>","<uses-feature android:name=\"android.hardware.camera\"/>","<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>","<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>","<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>","<uses-permission android:name=\"android.permission.VIBRATE\"/>","<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>","<uses-permission android:name=\"android.permission.CALL_PHONE\"/>","<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>","<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>","<uses-permission android:name=\"android.permission.CAMERA\"/>"]
+				"permissions": ["<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>","<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>","<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>","<uses-feature android:name=\"android.hardware.camera\"/>","<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>","<uses-permission android:name=\"android.permission.VIBRATE\"/>","<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>","<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>","<uses-permission android:name=\"android.permission.CALL_PHONE\"/>","<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>","<uses-permission android:name=\"android.permission.CAMERA\"/>"]
 				/*使用 Native.js 调用原生安卓 API 需要申请的系统权限，用户可以添加多个权限的字符串*/
 			},
 			"orientation": ["portrait-primary", "landscape-primary", "portrait-secondary", "landscape-secondary"],/*必选*/
@@ -105,34 +105,34 @@
 					"prerendered": "", /*必选，是否高亮显示*/
 					"auto": "", /*可选，512x512，用于自动生成各种尺寸图标的大分辨率程序图标*/
 					"iphone": {
-						"normal": "",/*可选，57x57，iPhone普通屏幕程序图标*/
-						"retina": "",/*可选，114x114，iPhone高分屏程序图标*/
-						"retina7": "",/*可选，120x120，iPhone iOS7高分屏程序图标*/
-						"spotlight-normal": "", /*可选，29x29，iPhone Spotlight搜索程序图标*/
-						"spotlight-retina": "", /*可选，58x58，iPhone高分屏Spotlight搜索程序图标*/
-						"spotlight-retina7": "",/*可选，80x80，iPhone iOS7高分屏Spotlight搜索程序图标*/
-						"settings-normal": "", /*可选，29x29，iPhone设置页面程序图标*/
-						"settings-retina": "" /*iPhone 高分屏设置页面程序图标*/
+						"normal": "unpackage/res/icons/57x57.png",/*可选，57x57，iPhone普通屏幕程序图标*/
+						"retina": "unpackage/res/icons/114x114.png",/*可选，114x114，iPhone高分屏程序图标*/
+						"retina7": "unpackage/res/icons/120x120.png",/*可选，120x120，iPhone iOS7高分屏程序图标*/
+						"spotlight-normal": "unpackage/res/icons/29x29.png", /*可选，29x29，iPhone Spotlight搜索程序图标*/
+						"spotlight-retina": "unpackage/res/icons/58x58.png", /*可选，58x58，iPhone高分屏Spotlight搜索程序图标*/
+						"spotlight-retina7": "unpackage/res/icons/80x80.png",/*可选，80x80，iPhone iOS7高分屏Spotlight搜索程序图标*/
+						"settings-normal": "unpackage/res/icons/29x29.png", /*可选，29x29，iPhone设置页面程序图标*/
+						"settings-retina": "unpackage/res/icons/58x58.png","retina8":"unpackage/res/icons/180x180.png","settings-retina8":"unpackage/res/icons/87x87.png" /*iPhone 高分屏设置页面程序图标*/
 					},
 					"ipad": {
-						"normal": "", /*可选，72x72，iPad普通屏幕程序图标*/
-						"retina": "", /*可选，144x144，iPad高分屏程序图标*/
-						"normal7": "", /*可选，76x76，iPad iOS7程序图标*/
-						"retina7": "", /*可选，152x152，iPad iOS7高分屏程序图标*/
-						"spotlight-normal": "", /*可选，50x50，iPad Spotlight搜索程序图标*/
-						"spotlight-retina": "", /*可选，100x100，iPad高分屏Spotlight搜索程序图标*/
-						"spotlight-normal7": "",/*可选，40x40，iPad iOS7 Spotlight搜索程序图标*/
-						"spotlight-retina7": "",/*可选，80x80，iPad iOS7高分屏Spotlight搜索程序图标*/
-						"settings-normal": "",/*可选，29x29，iPad设置页面程序图标*/
-						"settings-retina": "" /*iPad 高分屏设置页面程序图标*/
+						"normal": "unpackage/res/icons/72x72.png", /*可选，72x72，iPad普通屏幕程序图标*/
+						"retina": "unpackage/res/icons/144x144.png", /*可选，144x144，iPad高分屏程序图标*/
+						"normal7": "unpackage/res/icons/76x76.png", /*可选，76x76，iPad iOS7程序图标*/
+						"retina7": "unpackage/res/icons/152x152.png", /*可选，152x152，iPad iOS7高分屏程序图标*/
+						"spotlight-normal": "unpackage/res/icons/50x50.png", /*可选，50x50，iPad Spotlight搜索程序图标*/
+						"spotlight-retina": "unpackage/res/icons/100x100.png", /*可选，100x100，iPad高分屏Spotlight搜索程序图标*/
+						"spotlight-normal7": "unpackage/res/icons/40x40.png",/*可选，40x40，iPad iOS7 Spotlight搜索程序图标*/
+						"spotlight-retina7": "unpackage/res/icons/80x80.png",/*可选，80x80，iPad iOS7高分屏Spotlight搜索程序图标*/
+						"settings-normal": "unpackage/res/icons/29x29.png",/*可选，29x29，iPad设置页面程序图标*/
+						"settings-retina": "unpackage/res/icons/58x58.png" /*iPad 高分屏设置页面程序图标*/
 					}
 				},
 				"android": {
-					"mdpi": "", /*必选，48x48，普通屏程序图标*/
-					"ldpi": "", /*必选，48x48，大屏程序图标*/
-					"hdpi": "", /*必选，72x72，高分屏程序图标*/
-					"xhdpi": "",/*必选，96x96，720P高分屏程序图标*/
-					"xxhdpi": "" /*1080P 高分屏程序图标*/
+					"mdpi": "unpackage/res/icons/48x48.png", /*必选，48x48，普通屏程序图标*/
+					"ldpi": "unpackage/res/icons/48x48.png", /*必选，48x48，大屏程序图标*/
+					"hdpi": "unpackage/res/icons/72x72.png", /*必选，72x72，高分屏程序图标*/
+					"xhdpi": "unpackage/res/icons/96x96.png",/*必选，96x96，720P高分屏程序图标*/
+					"xxhdpi": "unpackage/res/icons/144x144.png" /*1080P 高分屏程序图标*/
 				}
 			},
 			"splashscreen": {
@@ -156,9 +156,9 @@
 				"android": {
 					"mdpi": "", /*必选，240x282，普通屏启动图片*/
 					"ldpi": "", /*必选，320x442，大屏启动图片*/
-					"hdpi": "", /*必选，480x762，高分屏启动图片*/
-					"xhdpi": "", /*必选，720x1242，720P高分屏启动图片*/
-					"xxhdpi": "" /*1080p 高分屏启动图片*/
+					"hdpi": "F:/git/wangyi-angular/img/b61c758cd14f37068b1ef52af18c88cf.png", /*必选，480x762，高分屏启动图片*/
+					"xhdpi": "F:/git/wangyi-angular/img/b61c758cd14f37068b1ef52af18c88cf.png", /*必选，720x1242，720P高分屏启动图片*/
+					"xxhdpi": "F:/git/wangyi-angular/img/b61c758cd14f37068b1ef52af18c88cf.png" /*1080p 高分屏启动图片*/
 				}
 			}
 		}
@@ -172,7 +172,9 @@
 					"css/mui.min.css",
 					"js/update.js",
 					"list.html",
-					"views/tabs/tab-news.html"
+					"views/tabs/tab-news.html",
+					"views/tabs/tab-topic.html",
+					null
 				],
 				"refer": [
 					"index-menu.html",
@@ -180,8 +182,7 @@
 					"examples/info.html",
 					"examples/badges.html",
 					"views/tabs/tab-liveradio.html",
-					"views/tabs/tab-setting.html",
-					"views/tabs/tab-topic.html"
+					"views/tabs/tab-setting.html"
 				],
 				"priority": 0
 			},
@@ -1097,9 +1098,15 @@
 			},
 			"views/list/news-list.html": {
 				"resources": [
-					"libs/angular.js"
+					"libs/angular.js",
+					"js/mui.min.js",
+					"css/mui.min.css",
+					"images/404.jpg",
+					"fonts/mui.ttf"
 				],
-				"refer": [],
+				"refer": [
+					"views/details/newsDetail.html"
+				],
 				"priority": 0
 			}
 		},
