@@ -50,7 +50,7 @@
 
 				<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
 				<!--轮播图开始-->
-				<div lunbo>
+				<div lunbo id="lunbo">
 
 				</div>
 				<!--轮播图结束-->
@@ -75,9 +75,9 @@
 	<script src="../../libs/angular.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/ng-template" id="lunbo.html">
 		<ul>
-			<li ng-repeat="img in images" class="fade-in style hidden">
+			<li ng-repeat="img in images" class="fade-in style hidden" >
 				<!--<a href="{{img.imgsrc}}"><img width="100%" src="{{img.imgsrc}}" alt="" /></a>-->
-				<a href="">
+				<a href="" data={{img.url}}>
 					<img width="100%" ng-src={{img.imgsrc}} style="margin-left: -20px;" alt="" />
 					
 				</a>
@@ -110,11 +110,11 @@
 				var  offset = Math.floor(Math.random()*15);
 				var size = offset+ 10;
 				var url = 'http://c.m.163.com/nc/article/headline/T1348647853363/' + offset + '-' + size + '.html';
+				
 				mui.ajax({
 					url:url,
 					success:function(res){
 						var items = res['T1348647853363'];
-//						document.querySelector('#listBox').innerHTML='';
 						createList(items);
 					}
 				})
@@ -130,6 +130,7 @@
 				mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > 2)); //参数为true代表没有更多数据了。
 				offset = offset+10;
 				var url = 'http://c.m.163.com/nc/article/headline/T1348647853363/' + offset + '-' + size + '.html';
+				console.log(url);
 				mui.ajax({
 					url:url,
 					success:function(res){
@@ -148,7 +149,19 @@
 			}
 		})
 //		点击轮播图跳转
-		
+		mui('#lunbo').on('tap','a',function(){
+			var id = this.getAttribute('data');
+//			console.log(id);
+			var locs = window.localStorage;
+			locs.id = id;
+			mui.openWindow({
+				url:'../details/lunboxq.html',
+				styles:{
+					top:0,
+					bottom:0
+				}
+			})
+		})
 //		列别点击跳转函数
 		mui('#listBox').on('tap','a',function(){
 			var id = this.getAttribute('data');

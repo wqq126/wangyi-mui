@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../../css/mui.min.css" />
+		<style type="text/css">
+			body {
+				padding: 5px;
+			}
+			
+			article img {
+				width: 100%;
+			}
+		</style>
+	</head>
+
+	<body ng-app='myApp' ng-controller='deatailCtrl'>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">新闻</h1>
+		</header>
+		<h3 style="margin-top: 45px;" >{{news.title}}</h3>
+		<article ng-bind-html="bodys"></article>
+		<!--<div>
+			<a ng-show="morereply" class="moreBtn ">查看跟帖</a>
+		</div>-->
+		<!--<button id='morereply' type="button" class="mui-btn mui-btn-primary mui-btn-block">查看跟帖</button>-->
+		<img width="100%" ng-if="isno" src="../../images/404.jpg" alt="" />
+	</body>
+	<script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../libs/angular.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../libs/angular-sanitize.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		mui.init();
+		
+//		查看跟帖
+//		mui('body').on('tap','#morereply',function(){
+//			mui.openWindow({
+//				url:'../replys/newsreply.html',
+//				
+//			})
+//		})
+		var app = angular.module('myApp', ['ngSanitize']);
+		app.controller('deatailCtrl', ['$scope', '$http', function($scope, $http) {
+			var id = window.localStorage.id;
+			var url = 'http://c.m.163.com/nc/article/' + id + '/full.html';
+			$http.get(url).then(function(res) {
+				$scope.news = res.data[id];
+				var REG_img = '<!--IMG#(.*?)?-->';
+				var regExpression = new RegExp(REG_img, 'mg');
+
+				if(res.data[id]) {
+					$scope.bodys = res.data[id].body.replace(regExpression, function(a, b) {
+						for(var i = 0; i < res.data[id].img.length; i++) {
+							if(i == b) {
+								b = res.data[id].img[i].src;
+							}
+						}
+						return '<img src =' + b + '>';
+					})
+					if(res.data[id].title != '您的客户端版本需要升级') {
+						$scope.morereply = true;
+					}
+				}else{
+					$scope.isno = true;
+				}
+
+			})
+		}]);
+	</script>
+
+</html>

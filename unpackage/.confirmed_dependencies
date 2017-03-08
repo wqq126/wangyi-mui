@@ -16,7 +16,8 @@
       "views/tabs/tab-liveradio.html",
       "views/tabs/tab-setting.html",
       "views/tabs/tab-news.html",
-      "views/tabs/tab-topic.html"
+      "views/tabs/tab-topic.html",
+      "examples/guide.html"
     ]
   },
   "examples/icons.html": {
@@ -44,7 +45,8 @@
       "css/mui.min.css"
     ],
     "refer": [
-      "views/details/newsDetail.html"
+      "views/details/newsDetail.html",
+      "views/details/lunboxq.html"
     ]
   },
   "views/tabs/tab-topic.html": {
@@ -123,6 +125,45 @@
     ],
     "refer": [
       "views/details/newsDetail.html"
+    ]
+  },
+  "views/tabs/tab-setting.html": {
+    "resources": [
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "views/tabs/js/app.js",
+      "views/tabs/js/mui.enterfocus.js",
+      "js/mui.js",
+      "views/tabs/images/sinaweibo.png",
+      "views/tabs/images/weixin.png",
+      "views/tabs/images/qq.png",
+      "fonts/mui.ttf"
+    ],
+    "refer": [
+      "views/tabs/main.html",
+      "views/tabs/reg.html",
+      "views/tabs/tab-news.html"
+    ]
+  },
+  "views/tabs/reg.html": {
+    "resources": [
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "js/mui.js"
+    ]
+  },
+  "examples/guide.html": {
+    "resources": [
+      "css/mui.min.css"
+    ]
+  },
+  "views/details/lunboxq.html": {
+    "resources": [
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "images/404.jpg",
+      "libs/angular-sanitize.js",
+      "libs/angular.js"
     ]
   }
 }

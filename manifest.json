@@ -1,7 +1,7 @@
 {
 	"@platforms": ["android", "iPhone", "iPad"],
 	"id": "H5CA4ED6B",/*必选，应用的标识*/
-	"name": "test",/*必选，应用名称*/
+	"name": "蜗牛",/*必选，应用名称*/
 	"version": {
 		"name": "1.0",/*必选，版本名称*/
 		"code": ""
@@ -182,7 +182,8 @@
 					"examples/info.html",
 					"examples/badges.html",
 					"views/tabs/tab-liveradio.html",
-					"views/tabs/tab-setting.html"
+					"views/tabs/tab-setting.html",
+					"examples/guide.html"
 				],
 				"priority": 0
 			},
@@ -1037,7 +1038,8 @@
 					"css/mui.min.css"
 				],
 				"refer": [
-					"views/details/newsDetail.html"
+					"views/details/newsDetail.html",
+					"views/details/lunboxq.html"
 				],
 				"priority": 0
 			},
@@ -1107,6 +1109,45 @@
 				"refer": [
 					"views/details/newsDetail.html"
 				],
+				"priority": 0
+			},
+			"views/tabs/tab-setting.html": {
+				"resources": [
+					"js/mui.min.js",
+					"css/mui.min.css",
+					"views/tabs/js/app.js",
+					"views/tabs/js/mui.enterfocus.js",
+					"js/mui.js",
+					"views/tabs/images/sinaweibo.png",
+					"views/tabs/images/weixin.png",
+					"views/tabs/images/qq.png",
+					"fonts/mui.ttf"
+				],
+				"refer": [
+					"views/tabs/main.html",
+					"views/tabs/reg.html",
+					"views/tabs/tab-news.html"
+				],
+				"priority": 0
+			},
+			"views/tabs/reg.html": {
+				"resources": [
+					"fonts/mui.ttf",
+					"css/mui.min.css",
+					"js/mui.js"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"views/details/lunboxq.html": {
+				"resources": [
+					"js/mui.min.js",
+					"css/mui.min.css",
+					"images/404.jpg",
+					"libs/angular-sanitize.js",
+					"libs/angular.js"
+				],
+				"refer": [],
 				"priority": 0
 			}
 		},
